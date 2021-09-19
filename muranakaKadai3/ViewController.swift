@@ -15,10 +15,6 @@ class ViewController: UIViewController {
     @IBOutlet private weak var textField1Label: UILabel!
     @IBOutlet private weak var textField2Label: UILabel!
     @IBOutlet private weak var calculationLabel: UILabel!
-// この辺りに「let num1: Int」 「let num2: Int」　を定義して、ViewController.swiftの中で
-// 汎用したいが、varでしか定義ができません。「let num1: Int」という初期値なしの定義は、メソッド外では難しいですか？
-    private var num1: Int = 0
-    private var num2: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,26 +23,26 @@ class ViewController: UIViewController {
         calculationLabel.text = "0"
     }
 
-    @IBAction private func textField1PlusminusSwitch(_ sender: UISwitch) {
-        if sender.isOn {
-            num1 = (Int(textField1.text ?? "") ?? 0) * -1
-        } else {
-            num1 = (Int(textField1.text ?? "") ?? 0)
-        }
-        textField1Label.text = String(num1)
-    }
-
-    @IBAction private func textField2PlusminusSwitch(_ sender: UISwitch) {
-        if sender.isOn {
-            num2 = (Int(textField2.text ?? "") ?? 0) * -1
-        } else {
-            num2 = (Int(textField2.text ?? "") ?? 0)
-        }
-        textField2Label.text = String(num2)
-    }
-
     @IBAction private func calculate(_ sender: Any) {
-        let calculation = num1 + num2
-        calculationLabel.text = String(calculation)
+        let originalNum1 = Int(textField1.text ?? "") ?? 0
+        let originalNum2 = Int(textField2.text ?? "") ?? 0
+
+        let signedNum1: Int
+        if textField1Switch.isOn {
+            signedNum1 = -originalNum1
+        } else {
+            signedNum1 = originalNum1
+        }
+        textField1Label.text = String(signedNum1)
+
+        let signedNum2: Int
+        if textField2Switch.isOn {
+            signedNum2 = -originalNum2
+        } else {
+            signedNum2 = originalNum2
+        }
+        textField2Label.text = String(signedNum2)
+
+        calculationLabel.text = String(signedNum1 + signedNum2)
     }
 }
